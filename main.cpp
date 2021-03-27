@@ -1,15 +1,14 @@
-#include "sprite.h"
+#include "component_sprite.h"
+#include "constants.h"
+#include "game.h"
+#include "graphics.h"
+#include "service_locator.h"
 #include <SDL.h>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-
-constexpr const char* APP_NAME = "Petit Program";
-constexpr int BACKBUFFER_WIDTH = 128;
-constexpr int BACKBUFFER_HEIGHT = 72;
-constexpr int SCREEN_WIDTH = 1280;
-constexpr int SCREEN_HEIGHT = 720;
 
 
 /// Creates a renderTarget. That is a special texture that can be used as destination
@@ -33,7 +32,14 @@ SDL_Texture* createRendertarget(SDL_Renderer* renderer, int width, int height)
     return texture;
 }
 
-
+#ifdef PETIT_TESTS
+int main()
+{
+    int result = !testServiceLocator();
+    printf("Result: %d\n", result);
+    return result;
+}
+#else
 int main()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -65,16 +71,22 @@ int main()
     }
 
     SDL_Texture* renderTarget = createRendertarget(renderer, BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT);
-    SpriteResource playerSpriteResource = createSpriteResource(renderer, PLAYER, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_FRAMES);
-
-    Sprite player;
-    player.spriteResource = &playerSpriteResource;
 
     SDL_Event e;
     bool quit = false;
 
+    Uint32 time = SDL_GetTicks();
+    constexpr Uint32 targetFrameTime = 1000 / 60;
+
+    Game game(renderer);
+
+    InputService inputService;
+    GameServiceLocator::set(&inputService);
+
     while (!quit)
     {
+        INPUT.flush();
+
         while (SDL_PollEvent(&e))
         {
             if (e.type == SDL_EventType::SDL_KEYDOWN)
@@ -83,22 +95,41 @@ int main()
                 {
                     quit = true;
                 }
+
+                INPUT.pushKeyDown(e.key.keysym.scancode);
             }
-            if (e.type == SDL_EventType::SDL_QUIT)
+            else if (e.type == SDL_EventType::SDL_KEYUP)
+            {
+                INPUT.pushKeyUp(e.key.keysym.scancode);
+            }
+            else if (e.type == SDL_EventType::SDL_QUIT)
             {
                 quit = true;
             }
         }
+
+        if(quit) break;
+
         SDL_SetRenderTarget(renderer, renderTarget);
         SDL_RenderClear(renderer);
 
-        SDL_Rect destRect = playerSpriteResource.rect[0];
-        destRect.x = player.x;
-        destRect.y = player.y;
-        SDL_RenderCopy(renderer, playerSpriteResource.texture, &player.spriteResource->rect[player.frame], &destRect);
+        /*
+        Uint32 newTime = SDL_GetTicks();
+        Uint32 timePassed = newTime - time;
+        timePassed = std::min(timePassed, 100u);
+        while(timePassed >= targetFrameTime)
+        {
+//            printf("timePassed %d\n", timePassed);
+            timePassed -= targetFrameTime;
+         */
+            game.update(targetFrameTime);
+            /*
+        }
+//        printf("\n");
+        time = newTime + timePassed;
+             */
 
-        player.frame = (player.frame + 1) % player.spriteResource->frames;
-        SDL_Delay(160);
+        game.draw();
 
         SDL_SetRenderTarget(renderer, nullptr);
         SDL_RenderClear(renderer);
@@ -113,3 +144,4 @@ int main()
 
     return 0;
 }
+#endif
