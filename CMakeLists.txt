@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
 project(petit_program)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17 CACHE STRING "The C++ standard to use")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(WITH_TESTS "Enable Unit Tests" OFF)
 
