@@ -82,7 +82,7 @@ bool handleEvents(SDL_Window* window, SDL_Event& e)
             {
                 case SDL_WINDOWEVENT_RESIZED:
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    if(e.window.data1 < BACKBUFFER_WIDTH or e.window.data2 < BACKBUFFER_HEIGHT)
+                    if(e.window.data1 < BACKBUFFER_WIDTH || e.window.data2 < BACKBUFFER_HEIGHT)
                     {
                         SDL_SetWindowSize(window, std::max(BACKBUFFER_WIDTH, e.window.data1), std::max(BACKBUFFER_HEIGHT, e.window.data2));
                     }
