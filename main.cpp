@@ -33,7 +33,7 @@ SDL_Texture* createRendertarget(SDL_Renderer* renderer, int width, int height)
 }
 
 #ifdef PETIT_TESTS
-int main()
+int main(int argc, char *argv[])
 {
     int result = !testServiceLocator();
     printf("Result: %d\n", result);
@@ -93,7 +93,7 @@ bool handleEvents(SDL_Window* window, SDL_Event& e)
     return quit;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
