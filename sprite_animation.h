@@ -6,6 +6,8 @@
 #define PETIT_PROGRAM_SPRITE_ANIMATION_H
 
 #include "sprite_resource.h"
+
+/// Plays a list of frames from a sprite resource
 class SpriteAnimation
 {
 public:

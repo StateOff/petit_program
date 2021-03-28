@@ -7,7 +7,6 @@
 
 #include <SDL.h>
 #include <array>
-#include <cassert>
 
 constexpr int PLAYER_WIDTH = 9;
 constexpr int PLAYER_HEIGHT = 9;

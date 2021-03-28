@@ -9,6 +9,8 @@ class InputService
 {
 public:
     InputService()
+    : m_currentKeysDown()
+    , m_lastKeysDown()
     {
         std::fill(m_currentKeysDown.begin(), m_currentKeysDown.end(), false);
     }

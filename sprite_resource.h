@@ -5,7 +5,7 @@
 #ifndef PETIT_PROGRAM_SPRITE_RESOURCE_H
 #define PETIT_PROGRAM_SPRITE_RESOURCE_H
 
-/// Holds a texture atlas and rect towards if frames
+/// Holds a texture atlas and rect for frames
 class SpriteResource
 {
 public:

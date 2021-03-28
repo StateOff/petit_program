@@ -15,6 +15,12 @@
 #include "resources.h"
 
 
+/// Maps colors from a uchar to an array of SDL_Colors. This makes the sprite
+/// definition easier.
+///
+/// \param colorCode Can be any ascii character beyond the firstEntryOffset of ' ' (32)
+/// \param palette Array of colors, first index being the firstEntryOffset of ' ' (32)
+/// \return Color in the palette
 static SDL_Color mapColor(unsigned char colorCode, const std::array<SDL_Color, 5>& palette)
 {
     constexpr unsigned char firstEntryOffset = ' ';
@@ -51,7 +57,7 @@ Uint32 getPrefferedPixelformat(SDL_Renderer* renderer)
 
 
 /// Calculate the pitch for a format / width
-/// Copied from SDL source code
+/// Copied from SDL source code.
 ///
 /// \param format
 /// \param width

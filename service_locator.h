@@ -38,9 +38,13 @@ private:
     static ServiceLocatorType services_;
 };
 
+// -- Service Locator definition
+
 using GameServiceLocator = ServiceLocator<InputService*>;
+// Initialized lazily, be sure to set the service as early as possible
 template<> GameServiceLocator::ServiceLocatorType GameServiceLocator::services_{nullptr};
 
+// Shortcuts
 #define INPUT GameServiceLocator::get<InputService>()
 
 #ifdef PETIT_TESTS
