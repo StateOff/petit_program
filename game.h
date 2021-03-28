@@ -16,6 +16,7 @@
 #include "entity_enemy.h"
 #include "entity_player.h"
 #include "entity_point.h"
+#include "entity_text.h"
 #include "levels.h"
 #include "sprite_resource.h"
 #include <SDL.h>
@@ -41,20 +42,27 @@ public:
         m_spriteResources[SPRITE_PLAYER_2] = std::make_shared<SpriteResource>(renderer, PLAYER_DATA, PLAYER_WIDTH, PLAYER_HEIGHT, palette2, PLAYER_FRAMES);
         m_spriteResources[SPRITE_POINT] = std::make_shared<SpriteResource>(renderer, POINT_DATA, POINT_WIDTH, POINT_HEIGHT, palette2, POINT_FRAMES);
         m_spriteResources[SPRITE_NUMBERS] = std::make_shared<SpriteResource>(renderer, NUMBERS_DATA, NUMBERS_WIDTH, NUMBERS_HEIGHT, palette1, NUMBERS_FRAMES);
+        m_spriteResources[SPRITE_TEXT] = std::make_shared<SpriteResource>(renderer, TEXT_DATA, TEXT_WIDTH, TEXT_HEIGHT, palette1, TEXT_FRAMES);
 
         m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_IDLE] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_1], std::initializer_list<size_t>{0, 1});
         m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_EAT] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_1], std::initializer_list<size_t>{0, 1});
-        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_BITTEN] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_1], std::initializer_list<size_t>{2, 2, 3, 4, 5, 6, 7, 7, 7, 7});
+        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_FEAR] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_1], std::initializer_list<size_t>{2});
+        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_BITTEN] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_1], std::initializer_list<size_t>{3, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8});
 
         m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_IDLE] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_2], std::initializer_list<size_t>{0});
         m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_EAT] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_2], std::initializer_list<size_t>{0, 1});
-        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_BITTEN] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_2], std::initializer_list<size_t>{2, 2, 3, 4, 5, 6, 7, 7, 7, 7});
+        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_FEAR] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_2], std::initializer_list<size_t>{2});
+        m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_BITTEN] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_PLAYER_2], std::initializer_list<size_t>{3, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8});
 
         m_spriteAnimations[SPRITE_ANIMATION_POINT_SMALL] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_POINT], std::initializer_list<size_t>{0});
         m_spriteAnimations[SPRITE_ANIMATION_POINT_BIG] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_POINT], std::initializer_list<size_t>{1});
         m_spriteAnimations[SPRITE_ANIMATION_POINT_BLINK] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_POINT], std::initializer_list<size_t>{0, 1});
 
         m_spriteAnimations[SPRITE_ANIMATION_NUMBERS] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_NUMBERS], std::initializer_list<size_t>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+
+        m_spriteAnimations[SPRITE_ANIMATION_TEXT_LEVEL] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_TEXT], std::initializer_list<size_t>{1, 2, 3, 2, 1});
+        m_spriteAnimations[SPRITE_ANIMATION_TEXT_READY] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_TEXT], std::initializer_list<size_t>{8, 2, 5, 9, 10, 11});
+        m_spriteAnimations[SPRITE_ANIMATION_TEXT_GAME_OVER] = std::make_unique<SpriteAnimation>(m_spriteResources[SPRITE_TEXT], std::initializer_list<size_t>{4, 5, 6, 2, 0, 7, 3, 2, 8});
 
         // Center the gridd
 
@@ -108,6 +116,22 @@ public:
         cp->setPosition(BACKBUFFER_WIDTH - NUMBERS_WIDTH - 10, 2);
         m_entities.emplace_back(std::move(cp));
         m_counterPlayerIndex = m_entities.size() - 1;
+
+        auto txtLevel = std::make_unique<Text>(m_spriteAnimations, true);
+        txtLevel->setPosition(BACKBUFFER_WIDTH / 2, 2);
+        m_entities.emplace_back(std::move(txtLevel));
+
+        auto cLevel = std::make_unique<Counter>(m_spriteAnimations, false);
+        cLevel->setPosition(BACKBUFFER_WIDTH / 2 + TEXT_WIDTH * 2, 2);
+        cLevel->setNumber(m_level);
+        m_entities.emplace_back(std::move(cLevel));
+
+        auto txtReady = std::make_unique<Text>(m_spriteAnimations, true);
+        txtReady->setPosition(BACKBUFFER_WIDTH / 2 + TEXT_WIDTH * 3, BACKBUFFER_HEIGHT / 2 - TEXT_HEIGHT);
+        txtReady->setText(m_spriteAnimations[SPRITE_ANIMATION_TEXT_READY].get());
+        m_entities.emplace_back(std::move(txtReady));
+        m_textReadyIndex = m_entities.size() - 1;
+
     }
 
     void update(Uint32 deltaTime)
@@ -118,6 +142,7 @@ public:
             if (m_time >= 3 * 1000)
             {
                 m_gameState = GAMESTATE_PLAYING;
+                m_entities[m_textReadyIndex] = nullptr;
             }
             return;
         }
@@ -135,6 +160,14 @@ public:
                 if (m_level > LEVELS_COUNT)
                 {
                     m_gameState = GAMESTATE_GAME_OVER;
+
+                    auto txtGameOver = std::make_unique<Text>(m_spriteAnimations, true);
+                    txtGameOver->setPosition(BACKBUFFER_WIDTH / 2 + TEXT_WIDTH * 5, BACKBUFFER_HEIGHT / 2 - TEXT_HEIGHT);
+                    txtGameOver->setText(m_spriteAnimations[SPRITE_ANIMATION_TEXT_GAME_OVER].get());
+                    m_entities.emplace_back(std::move(txtGameOver));
+                    m_textGameOverIndex = m_entities.size() - 1;
+
+                    m_entities[m_playerIndex] = nullptr;
                 }
                 else
                 {
@@ -167,7 +200,7 @@ public:
                 Point* point = dynamic_cast<Point*>(entity.get());
                 if (point != nullptr)
                 {
-                    if (m_numPointsPlayer + m_numPointsEnemy >= m_numPoints - 20) point->setSpeed(FAST_BLINK_SPEED);
+                    if (m_numPointsPlayer + m_numPointsEnemy >= m_numPoints - 10) point->setSpeed(FAST_BLINK_SPEED);
 
 
                     SDL_Rect pointRect = point->collisionRect();
@@ -185,8 +218,8 @@ public:
                     {
                         entity->update(deltaTime);
                     }
-
                     enemy->setIsWinning(m_numPointsEnemy >= m_numPointsPlayer);
+
                 }
                 else
                 {
@@ -205,7 +238,7 @@ public:
                         enemy->setAnimation(
                             m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_BITTEN].get());
                         enemy->setAnimationFrame(0);
-                        enemy->setAnimationSpeed(5);
+                        enemy->setAnimationSpeed(6);
                         player->freeze();
                         enemy->freeze();
                         m_time = 0;
@@ -217,11 +250,17 @@ public:
                 player->setAnimation(
                     m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_BITTEN].get());
                 player->setAnimationFrame(0);
-                player->setAnimationSpeed(5);
+                player->setAnimationSpeed(6);
                 player->freeze();
                 enemy->freeze();
                 enemy->setAnimationSpeed(0);
                 m_time = 0;
+            }
+
+            if (m_numPointsPlayer + m_numPointsEnemy == m_numPoints && m_numPointsPlayer > m_numPointsEnemy)
+            {
+                enemy->setAnimation(
+                    m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_FEAR].get());
             }
 
             counterPlayer->setNumber(m_numPointsPlayer);
@@ -260,6 +299,8 @@ private:
     size_t m_enemyIndex;
     size_t m_counterPlayerIndex;
     size_t m_counterEnemyIndex;
+    size_t m_textReadyIndex;
+    size_t m_textGameOverIndex;
     int m_numPoints{0};
     int m_numPointsPlayer{0};
     int m_numPointsEnemy{0};

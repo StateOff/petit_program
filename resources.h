@@ -11,7 +11,7 @@
 
 constexpr int PLAYER_WIDTH = 9;
 constexpr int PLAYER_HEIGHT = 9;
-constexpr int PLAYER_FRAMES = 8;
+constexpr int PLAYER_FRAMES = 9;
 constexpr unsigned char PLAYER_DATA[] =
     "   $$$   "
     "  $$$$$  "
@@ -30,6 +30,16 @@ constexpr unsigned char PLAYER_DATA[] =
     "$$$      "
     "$$$$     "
     " $$$$$   "
+    "  $$$$$  "
+    "   $$$   "
+
+    "   $$$   "
+    "  $$$$$  "
+    " $#$$$#$ "
+    "$$#$$$#$$"
+    "$$$$$$$$$"
+    "$$$   $$$"
+    " $ $$$ $ "
     "  $$$$$  "
     "   $$$   "
 
@@ -174,6 +184,96 @@ constexpr unsigned char NUMBERS_DATA[] =
     "    !"
     " !!! "
 ;
+
+constexpr int TEXT_WIDTH = 5;
+constexpr int TEXT_HEIGHT = 5;
+constexpr int TEXT_FRAMES = 12;
+constexpr unsigned char TEXT_DATA[] =
+    // 0
+    "     "
+    "     "
+    "     "
+    "     "
+    "     "
+
+    // 1
+    "!    "
+    "!    "
+    "!    "
+    "!    "
+    "!!!! "
+
+    // 2
+    "!!!! "
+    "!    "
+    "!!!  "
+    "!    "
+    "!!!! "
+
+    // 3
+    "!   !"
+    "!   !"
+    "!   !"
+    " ! ! "
+    "  !  "
+
+    // 4
+    " !!!!"
+    "!    "
+    "!  !!"
+    "!   !"
+    " !!! "
+
+    // 5
+    "  !  "
+    " ! ! "
+    "!   !"
+    "!!!!!"
+    "!   !"
+
+    // 6
+    "!   !"
+    "!! !!"
+    "! ! !"
+    "!   !"
+    "!   !"
+
+    // 7
+    " !!! "
+    "!   !"
+    "!   !"
+    "!   !"
+    " !!! "
+
+    // 8
+    "!!!! "
+    "!   !"
+    "!!!! "
+    "!  ! "
+    "!   !"
+
+    // 9
+    "!!!! "
+    "!   !"
+    "!   !"
+    "!   !"
+    "!!!! "
+
+    // 10
+    "!   !"
+    " ! ! "
+    "  !  "
+    "  !  "
+    "  !  "
+
+    // 11
+    " !!  "
+    "!  ! "
+    "  !  "
+    "     "
+    "  !  "
+;
+
 
 static const std::array<SDL_Color, 5> palette1{{
     {.r = 0, .g = 0, .b = 0, .a = 0},        // Space
