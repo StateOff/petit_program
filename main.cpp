@@ -40,6 +40,33 @@ int main()
     return result;
 }
 #else
+bool handleEvents(SDL_Event& e)
+{
+    bool quit;
+    INPUT.flush();
+
+    while (SDL_PollEvent(&e))
+    {
+        if (e.type == SDL_KEYDOWN)
+        {
+            if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+            {
+                quit = true;
+            }
+
+            INPUT.pushKeyDown(e.key.keysym.scancode);
+        }
+        else if (e.type == SDL_KEYUP)
+        {
+            INPUT.pushKeyUp(e.key.keysym.scancode);
+        }
+        else if (e.type == SDL_QUIT)
+        {
+            quit = true;
+        }
+    }
+        return quit;
+}
 int main()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -85,30 +112,6 @@ int main()
 
     while (!quit)
     {
-        INPUT.flush();
-
-        while (SDL_PollEvent(&e))
-        {
-            if (e.type == SDL_EventType::SDL_KEYDOWN)
-            {
-                if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-                {
-                    quit = true;
-                }
-
-                INPUT.pushKeyDown(e.key.keysym.scancode);
-            }
-            else if (e.type == SDL_EventType::SDL_KEYUP)
-            {
-                INPUT.pushKeyUp(e.key.keysym.scancode);
-            }
-            else if (e.type == SDL_EventType::SDL_QUIT)
-            {
-                quit = true;
-            }
-        }
-
-        if(quit) break;
 
         // -- Fixed timestep. Compare:
         // -- https://gafferongames.com/post/fix_your_timestep/
@@ -121,10 +124,15 @@ int main()
 
         while(timePassed >= targetFrameTime)
         {
+            quit = handleEvents(e);
+            if(quit) break;
+
             timePassed -= targetFrameTime;
             game.update(targetFrameTime);
         }
         time = SDL_GetTicks() - timePassed;
+
+        if(quit) break;
 
         SDL_SetRenderTarget(renderer, renderTarget);
         SDL_RenderClear(renderer);
