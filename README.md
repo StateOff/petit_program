@@ -1,6 +1,6 @@
 # PETIT PROGRAM
 
-PAC-MAN meats Pong meats Super Smash Bros. ... with a lot of imagination.
+PAC-MAN meets Pong meets Super Smash Bros. ... with a lot of imagination.
 
 A small C++ SDL2 arcade-like game, most batteries included:
 
