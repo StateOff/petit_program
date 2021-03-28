@@ -65,8 +65,9 @@ bool handleEvents(SDL_Event& e)
             quit = true;
         }
     }
-        return quit;
+    return quit;
 }
+
 int main()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -122,17 +123,17 @@ int main()
         // Eliminate outlier by skipping frames
         timePassed = std::min(timePassed, 250u);
 
-        while(timePassed >= targetFrameTime)
+        while (timePassed >= targetFrameTime)
         {
             quit = handleEvents(e);
-            if(quit) break;
+            if (quit) break;
 
             timePassed -= targetFrameTime;
             game.update(targetFrameTime);
         }
         time = SDL_GetTicks() - timePassed;
 
-        if(quit) break;
+        if (quit) break;
 
         SDL_SetRenderTarget(renderer, renderTarget);
         SDL_RenderClear(renderer);
@@ -144,7 +145,6 @@ int main()
         SDL_RenderCopy(renderer, renderTarget, nullptr, nullptr);
 
         SDL_RenderPresent(renderer);
-
     }
 
     SDL_DestroyRenderer(renderer);
