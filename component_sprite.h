@@ -28,7 +28,7 @@ public:
         Component::render(renderer);
         assert(m_animation != nullptr);
         SDL_RendererFlip flip = isFlipped ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
-        m_animation->draw(renderer, x, y, flip);
+        m_animation->render(renderer, x, y, flip);
     }
     void update(Uint32 deltaTime) override
     {

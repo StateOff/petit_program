@@ -129,7 +129,7 @@ int main()
         SDL_SetRenderTarget(renderer, renderTarget);
         SDL_RenderClear(renderer);
 
-        game.draw();
+        game.render();
 
         SDL_SetRenderTarget(renderer, nullptr);
         SDL_RenderClear(renderer);

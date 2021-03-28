@@ -82,7 +82,7 @@ public:
         }
     }
 
-    void draw()
+    void render()
     {
         for (auto& entity : m_entities)
         {

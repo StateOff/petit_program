@@ -63,9 +63,9 @@ public:
         return m_keyFrames.size();
     }
 
-    void draw(SDL_Renderer* renderer, int x, int y, SDL_RendererFlip flip)
+    void render(SDL_Renderer* renderer, int x, int y, SDL_RendererFlip flip)
     {
-        m_spriteResource->draw(renderer, m_keyFrames[m_frame], x, y, flip);
+        m_spriteResource->render(renderer, m_keyFrames[m_frame], x, y, flip);
     }
 
     void setFrame(int frame)

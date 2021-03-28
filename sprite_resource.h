@@ -106,7 +106,7 @@ public:
         return m_frames;
     }
 
-    void draw(SDL_Renderer* renderer, int frame, int x, int y, SDL_RendererFlip flip)
+    void render(SDL_Renderer* renderer, int frame, int x, int y, SDL_RendererFlip flip)
     {
         assert(frame < m_frames);
         SDL_Rect destRect = rect(frame);
