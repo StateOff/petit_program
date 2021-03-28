@@ -40,7 +40,7 @@ int main()
     return result;
 }
 #else
-bool handleEvents(SDL_Event& e)
+bool handleEvents(SDL_Window* window, SDL_Event& e)
 {
     bool quit;
     INPUT.flush();
@@ -59,10 +59,35 @@ bool handleEvents(SDL_Event& e)
         else if (e.type == SDL_KEYUP)
         {
             INPUT.pushKeyUp(e.key.keysym.scancode);
+
+            if (e.key.keysym.scancode == SDL_SCANCODE_RETURN && e.key.keysym.mod & KMOD_ALT)
+            {
+                Uint32 flags = SDL_GetWindowFlags(window);
+                const bool isFullscreen = flags & SDL_WINDOW_FULLSCREEN_DESKTOP || flags & SDL_WINDOW_FULLSCREEN;
+                if(isFullscreen) {
+                    SDL_SetWindowFullscreen(window, 0);
+                }
+                else {
+                    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                }
+            }
         }
         else if (e.type == SDL_QUIT)
         {
             quit = true;
+        }
+        else if (e.type == SDL_WINDOWEVENT)
+        {
+            switch (e.window.event)
+            {
+                case SDL_WINDOWEVENT_RESIZED:
+                case SDL_WINDOWEVENT_SIZE_CHANGED:
+                    if(e.window.data1 < BACKBUFFER_WIDTH or e.window.data2 < BACKBUFFER_HEIGHT)
+                    {
+                        SDL_SetWindowSize(window, std::max(BACKBUFFER_WIDTH, e.window.data1), std::max(BACKBUFFER_HEIGHT, e.window.data2));
+                    }
+                    break;
+            }
         }
     }
     return quit;
@@ -78,7 +103,7 @@ int main()
 
     SDL_Window* window = SDL_CreateWindow(
         APP_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-        SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (!window)
     {
@@ -86,6 +111,8 @@ int main()
         SDL_Quit();
         return 1;
     }
+
+    SDL_SetWindowMinimumSize(window, BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(
         window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -111,6 +138,7 @@ int main()
     InputService inputService;
     GameServiceLocator::set(&inputService);
 
+    const double bufferAspect = BACKBUFFER_WIDTH / (double)BACKBUFFER_HEIGHT;
     while (!quit)
     {
 
@@ -125,7 +153,7 @@ int main()
 
         while (timePassed >= targetFrameTime)
         {
-            quit = handleEvents(e);
+            quit = handleEvents(window, e);
             if (quit) break;
 
             timePassed -= targetFrameTime;
@@ -136,13 +164,41 @@ int main()
         if (quit) break;
 
         SDL_SetRenderTarget(renderer, renderTarget);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         game.render();
 
+
         SDL_SetRenderTarget(renderer, nullptr);
+
+        SDL_SetRenderDrawColor(renderer, 25, 20, 33, 255);
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, renderTarget, nullptr, nullptr);
+
+        int windowWidth, windowHeight;
+        SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+
+        double windowAspect = windowWidth / (double)windowHeight;
+        SDL_Rect targetRect;
+        targetRect.w = windowWidth;
+        targetRect.h = windowHeight;
+
+        if(windowAspect > bufferAspect) {
+            // Scale based on height
+            int scaleFactor =  std::max(1.0, windowHeight / (double)BACKBUFFER_HEIGHT);
+            targetRect.w = scaleFactor * BACKBUFFER_WIDTH;
+            targetRect.h = scaleFactor * BACKBUFFER_HEIGHT;
+        } else {
+            // Scale based on width
+            int scaleFactor =  std::max(1.0, windowWidth / (double)BACKBUFFER_WIDTH);
+            targetRect.w = scaleFactor * BACKBUFFER_WIDTH;
+            targetRect.h = scaleFactor * BACKBUFFER_HEIGHT;
+        }
+
+        targetRect.x = (windowWidth - targetRect.w) / 2;
+        targetRect.y = (windowHeight - targetRect.h) / 2;
+
+            SDL_RenderCopy(renderer, renderTarget, nullptr, &targetRect);
 
         SDL_RenderPresent(renderer);
     }
