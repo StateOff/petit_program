@@ -280,8 +280,8 @@ static const std::array<SDL_Color, 5> palette1{{
 
 static const std::array<SDL_Color, 5> palette2{{
     {.r = 0, .g = 0, .b = 0, .a = 0},        // Space
-    {.r = 255, .g = 0, .b = 0, .a = 255},    // !
-    {.r = 200, .g = 128, .b = 64, .a = 255}, // "
+    {.r = 250, .g = 60, .b = 44, .a = 255},    // !
+    {.r = 200, .g = 182, .b = 64, .a = 255}, // "
     {.r = 226, .g = 240, .b = 220, .a = 255},// #
     {.r = 124, .g = 180, .b = 255, .a = 255},// $
 }};

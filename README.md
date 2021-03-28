@@ -65,6 +65,7 @@ the same pattern.
 # TODO
 
 - GamePad support
+- 2 Player Mode
 - Cleanup
   - Pull sprite animation state up to component
 - Sound  
