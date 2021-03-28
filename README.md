@@ -59,3 +59,7 @@ the same pattern.
 - Cleanup
   - Pull sprite animation state up to component
 - Sound  
+
+# License
+
+[Compare LICENSE.md](LICENSE.md)
