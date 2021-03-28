@@ -15,8 +15,10 @@ constexpr int BACKBUFFER_HEIGHT = 144;
 constexpr int SCREEN_WIDTH = 1280;
 constexpr int SCREEN_HEIGHT = 720;
 
+#ifndef NDEBUG
 // Shows the collision rectangles
 constexpr bool DEBUG_COLLISION_RECT = false;
+#endif
 
 enum SpriteNames
 {

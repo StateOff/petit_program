@@ -7,11 +7,24 @@ A small C++ SDL2 arcade-like game, most batteries included:
 - Levels, Sprites and Font defined as inline code
 - Amazing AI - behold Skynet
 - Only depends on SDL2 & C++ 17
-
+- Super-Mini unit test definition included (enable via `WITH_TESTS` CMake Option)
+- Super-Mini EC(S) included (using OOP, not DOD)
+- Tuple-based Service-Locator
+- In source SDL build
 
 # Building
 
 ## Linux
+
+Sane, developed and tested via:
+
+## Windows
+
+Too frustrating to get right, but hey:
+
+## MacOS
+
+Too hard and expensive to access. Should be somewhat similar to Linux.
 
 # How to play?
 
@@ -44,6 +57,5 @@ the same pattern.
 # TODO
 
 - Cleanup
-  - Move sprite animation state up
-  - FSM for game state
+  - Pull sprite animation state up to component
 - Sound  

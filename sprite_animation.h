@@ -15,8 +15,7 @@ public:
     {
     }
 
-    void
-    play()
+    void play()
     {
         m_state = State::SPRITE_ANIMATION_PLAYING_FORWARD;
     }

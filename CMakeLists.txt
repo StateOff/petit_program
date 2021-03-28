@@ -3,6 +3,8 @@ project(petit_program)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(WITH_TESTS "Enable Unit Tests" OFF)
+
 set( SDL_STATIC ON CACHE BOOL "" FORCE )
 set( SDL_SHARED OFF CACHE BOOL "" FORCE )
 add_subdirectory( contrib/SDL )
@@ -12,8 +14,9 @@ add_executable(petit_program main.cpp component_sprite.h resources.h service_loc
 target_link_libraries(petit_program SDL2main SDL2-static )
 target_include_directories(petit_program PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/contrib/SDL/include)
 
-add_executable(test_petit_program main.cpp component_sprite.h resources.h service_locator.h)
-
-target_link_libraries(test_petit_program SDL2main SDL2-static )
-target_include_directories(test_petit_program PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/contrib/SDL/include)
-target_compile_definitions(test_petit_program PRIVATE PETIT_TESTS)
+if(WITH_TESTS)
+    add_executable(test_petit_program main.cpp component_sprite.h resources.h service_locator.h)
+    target_link_libraries(test_petit_program SDL2main SDL2-static )
+    target_include_directories(test_petit_program PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/contrib/SDL/include)
+    target_compile_definitions(test_petit_program PRIVATE PETIT_TESTS)
+endif()
