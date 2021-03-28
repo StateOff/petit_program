@@ -68,6 +68,8 @@ the same pattern.
 - 2 Player Mode
 - Cleanup
   - Pull sprite animation state up to component
+  - Pull position into component
+  - Cache component access
 - Sound  
 
 # License
