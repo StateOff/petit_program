@@ -66,14 +66,12 @@ public:
                 if (point == nullptr) continue;
 
                 int newClosestDistance = distanceSquared(x(), y(), point->x(), point->y());
-//                printf("  Potential TARGET %d at %d\n", i, newClosestDistance);
                 if (m_targetIndex == -1 || newClosestDistance < closestDistanceSq)
                 {
                     m_targetIndex = i;
                     closestDistanceSq = newClosestDistance;
                 }
             }
-//            printf("New TARGET %d at %d\n\n", m_targetIndex, closestDistanceSq);
         }
         if(m_targetIndex == -1 && m_isWinning) {
             m_targetIndex = m_playerIndex;

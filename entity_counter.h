@@ -20,11 +20,6 @@ public:
         assert(spriteIndex == SPRITE_COMPONENT_INDEX);
     }
 
-    void update(Uint32 deltaTime) override
-    {
-        Entity::update(deltaTime);
-    }
-
     void render(SDL_Renderer* renderer) override
     {
         Sprite* sprite = dynamic_cast<Sprite*>(getComponent(SPRITE_COMPONENT_INDEX));

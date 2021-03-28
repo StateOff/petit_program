@@ -18,12 +18,6 @@ public:
         assert(spriteIndex == SPRITE_COMPONENT_INDEX);
     }
 
-    void update(Uint32 deltaTime) override
-    {
-        Entity::update(deltaTime);
-        Sprite* sprite = dynamic_cast<Sprite*>(getComponent(SPRITE_COMPONENT_INDEX));
-    }
-
     int height() const override
     {
         return POINT_HEIGHT;
