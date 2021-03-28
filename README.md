@@ -4,6 +4,8 @@ PAC-MAN meets Pong meets Super Smash Bros. ... with a lot of imagination.
 
 A small C++ SDL2 arcade-like game, most batteries included:
 
+![Petit Program Screenshot](media/petit_program.png)
+
 - Levels, Sprites and Font defined as inline code
 - Amazing AI - behold Skynet
 - Only depends on SDL2 & C++ 17
