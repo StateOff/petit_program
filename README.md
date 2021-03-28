@@ -14,17 +14,28 @@ A small C++ SDL2 arcade-like game, most batteries included:
 
 # Building
 
-## Linux
+Requirements:
 
-Sane, developed and tested via:
+- Build-System: CMake 3.17 or newer
+- Compiler: gcc / clang / msvc (with C++17 support)
+
+## Linux & MacOS
+
+```shell
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
 
 ## Windows
 
-Too frustrating to get right, but hey:
-
-## MacOS
-
-Too hard and expensive to access. Should be somewhat similar to Linux.
+```shell
+md build
+cd build
+cmake ..
+cmake --build .
+```
 
 # How to play?
 
@@ -64,6 +75,7 @@ the same pattern.
 
 # TODO
 
+- Main Menu
 - GamePad support
 - 2 Player Mode
 - Cleanup
