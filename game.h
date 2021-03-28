@@ -79,6 +79,8 @@ public:
             case GAMESTATE_PLAYING:
                 statePlaying(deltaTime);
                 break;
+            case GAMESTATE_GAME_OVER:
+                break;
         }
     }
 

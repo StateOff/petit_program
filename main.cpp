@@ -42,7 +42,7 @@ int main()
 #else
 bool handleEvents(SDL_Window* window, SDL_Event& e)
 {
-    bool quit;
+    bool quit = false;
     INPUT.flush();
 
     while (SDL_PollEvent(&e))
