@@ -28,6 +28,14 @@ Too hard and expensive to access. Should be somewhat similar to Linux.
 
 # How to play?
 
+## Keys
+
+- Move player via `Left`,`Top`,`Bottom`,`Right` keys.
+- Quit via `Escape`
+- Toggle Fullscreen- and Window-Mode via `ALT+RETURN`
+
+## Rules
+
 - Your goal is to collect more points than the opponent.
 - You may not touch the opponent during the collection phase.
 - If no points are left on the screen either:
@@ -56,6 +64,7 @@ the same pattern.
 
 # TODO
 
+- GamePad support
 - Cleanup
   - Pull sprite animation state up to component
 - Sound  
