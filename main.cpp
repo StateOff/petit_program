@@ -110,24 +110,24 @@ int main()
 
         if(quit) break;
 
-        SDL_SetRenderTarget(renderer, renderTarget);
-        SDL_RenderClear(renderer);
+        // -- Fixed timestep. Compare:
+        // -- https://gafferongames.com/post/fix_your_timestep/
 
-        /*
         Uint32 newTime = SDL_GetTicks();
         Uint32 timePassed = newTime - time;
-        timePassed = std::min(timePassed, 100u);
+
+        // Eliminate outlier by skipping frames
+        timePassed = std::min(timePassed, 250u);
+
         while(timePassed >= targetFrameTime)
         {
-//            printf("timePassed %d\n", timePassed);
             timePassed -= targetFrameTime;
-         */
             game.update(targetFrameTime);
-            /*
         }
-//        printf("\n");
-        time = newTime + timePassed;
-             */
+        time = SDL_GetTicks() - timePassed;
+
+        SDL_SetRenderTarget(renderer, renderTarget);
+        SDL_RenderClear(renderer);
 
         game.draw();
 
@@ -136,6 +136,7 @@ int main()
         SDL_RenderCopy(renderer, renderTarget, nullptr, nullptr);
 
         SDL_RenderPresent(renderer);
+
     }
 
     SDL_DestroyRenderer(renderer);
