@@ -43,13 +43,19 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
     
-    - name: Upload artifact
+    - name: Upload artifact .exe
       uses: actions/upload-artifact@v2
+      if: matrix.os == 'windows-latest'
+      with:
+        name: petit_program-${{ matrix.os }}
+        path: build/petit_program.exe
+      
+    - name: Upload artifact 
+      uses: actions/upload-artifact@v2
+      if: matrix.os != 'windows-latest'
       with:
         name: petit_program-${{ matrix.os }}
         path: build/petit_program
-      
-    
       
       
       
