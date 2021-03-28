@@ -124,6 +124,16 @@ private:
         createHUD();
     }
 
+    bool allPointsEaten() const
+    {
+        return m_numPointsPlayer + m_numPointsEnemy == m_numPoints;
+    }
+
+    bool isPlayerWinning() const
+    {
+        return m_numPointsPlayer > m_numPointsEnemy;
+    }
+
     void statePlaying(Uint32 deltaTime)
     {
         // Update the player first and then do the collision check
@@ -138,20 +148,21 @@ private:
         Counter* counterPlayer = dynamic_cast<Counter*>(m_entities[m_counterPlayerIndex].get());
         Counter* counterEnemy = dynamic_cast<Counter*>(m_entities[m_counterEnemyIndex].get());
 
-        // -- Update and collision check
+        // -- Update and collision check with Points
 
         for (int i = 0; i < m_entities.size(); ++i)
         {
             auto& entity = m_entities[i];
 
+            // -- Skip for players or inactive entities
+
             if (i == m_playerIndex || entity == nullptr) continue;
+
+            // -- Check if the player / enemy has eaten a point
 
             Point* point = dynamic_cast<Point*>(entity.get());
             if (point != nullptr)
             {
-                if (m_numPointsPlayer + m_numPointsEnemy >= m_numPoints - 10) point->setSpeed(FAST_BLINK_SPEED);
-
-
                 SDL_Rect pointRect = point->collisionRect();
                 if (SDL_HasIntersection(&playerRect, &pointRect))
                 {
@@ -165,23 +176,32 @@ private:
                 }
                 else
                 {
+                    // Handles the point's animation
                     entity->update(deltaTime);
                 }
-                enemy->setIsWinning(m_numPointsEnemy >= m_numPointsPlayer);
+
+                // If the last point has been eaten, this state tells the enemy
+                // to pursue the player or wait.
+                enemy->setIsWinning(!isPlayerWinning());
             }
             else
             {
+                // Update other entity
                 entity->update(deltaTime);
             }
         }
+
+        // -- Collision Check between Player and Enemy
 
         if (SDL_HasIntersection(&enemyRect, &playerRect))
         {
             m_gameState = GAMESTATE_BITTEN;
 
-            if (m_numPointsEnemy + m_numPointsPlayer == m_numPoints)
+            // -- If all points are gone, the player might have won the collision based on points
+
+            if (allPointsEaten())
             {
-                if (m_numPointsPlayer > m_numPointsEnemy)
+                if (isPlayerWinning())
                 {
                     enemy->setAnimation(
                         m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_BITTEN].get());
@@ -195,6 +215,8 @@ private:
                 }
             }
 
+            // -- Enemy won collision over Player
+
             player->setAnimation(
                 m_spriteAnimations[SPRITE_ANIMATION_PLAYER_1_BITTEN].get());
             player->setAnimationFrame(0);
@@ -205,7 +227,8 @@ private:
             m_time = 0;
         }
 
-        if (m_numPointsPlayer + m_numPointsEnemy == m_numPoints && m_numPointsPlayer > m_numPointsEnemy)
+        // -- If there are not points left
+        if (allPointsEaten() && isPlayerWinning())
         {
             enemy->setAnimation(
                 m_spriteAnimations[SPRITE_ANIMATION_PLAYER_2_FEAR].get());

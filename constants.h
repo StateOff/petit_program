@@ -17,8 +17,6 @@ constexpr int SCREEN_HEIGHT = 720;
 
 // Shows the collision rectangles
 constexpr bool DEBUG_COLLISION_RECT = false;
-constexpr int FAST_BLINK_TIME = 10 * 1000;
-constexpr double FAST_BLINK_SPEED = 0.4;
 
 enum SpriteNames
 {
