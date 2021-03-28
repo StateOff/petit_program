@@ -15,8 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        #os: [macos-latest, ubuntu-latest, windows-latest]
-        os: [windows-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -43,25 +42,13 @@ jobs:
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
-      
-    - name: Show folder
-      working-directory: ${{github.workspace}}/build
-      shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: ls Release
-      
-    - name: Show folder 2
-      working-directory: ${{github.workspace}}/build
-      shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: ls x64
     
     - name: Upload artifact .exe
       uses: actions/upload-artifact@v2
       if: matrix.os == 'windows-latest'
       with:
         name: petit_program-${{ matrix.os }}
-        path: build/petit_program.exe
+        path: build/Release/petit_program.exe
       
     - name: Upload artifact 
       uses: actions/upload-artifact@v2
