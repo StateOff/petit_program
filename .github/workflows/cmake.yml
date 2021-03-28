@@ -46,7 +46,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: petit_program
+        name: petit_program-${{ matrix.os }}
         path: build/petit_program
       
     
