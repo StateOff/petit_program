@@ -15,7 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        #os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -47,7 +48,13 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: tree
+      run: ls Release
+      
+    - name: Show folder 2
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: ls x64
     
     - name: Upload artifact .exe
       uses: actions/upload-artifact@v2
