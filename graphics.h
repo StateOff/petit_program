@@ -77,4 +77,26 @@ Sint64 calculatePitch(Uint32 format, int width)
     pitch = (pitch + 3) & ~3; /* 4-byte aligning for speed */
     return pitch;
 }
+
+/// Creates a renderTarget. That is a special texture that can be used as destination
+/// to render into. For example you can render into a smaller texture (backbuffer) and then
+/// scale it into the window.
+///
+/// \param renderer
+/// \param width
+/// \param height
+/// \return
+SDL_Texture* createRendertarget(SDL_Renderer* renderer, int width, int height)
+{
+    Uint32 pixelFormat = getPreferredPixelformat(renderer);
+
+    SDL_Texture* texture = SDL_CreateTexture(renderer,
+                                             pixelFormat,
+                                             SDL_TEXTUREACCESS_TARGET,
+                                             width,
+                                             height);
+
+    return texture;
+}
+
 #endif//PETIT_PROGRAM_GRAPHICS_H
