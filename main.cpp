@@ -17,27 +17,28 @@ int main(int argc, char *argv[])
     return result;
 }
 #else
-bool handleEvents(SDL_Window* window, SDL_Event& e)
+bool handleEvents(SDL_Window* window)
 {
+    SDL_Event event;
     bool quit = false;
     INPUT.flush();
 
-    while (SDL_PollEvent(&e))
+    while (SDL_PollEvent(&event))
     {
-        if (e.type == SDL_KEYDOWN)
+        if (event.type == SDL_KEYDOWN)
         {
-            if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+            if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
             {
                 quit = true;
             }
 
-            INPUT.pushKeyDown(e.key.keysym.scancode);
+            INPUT.pushKeyDown(event.key.keysym.scancode);
         }
-        else if (e.type == SDL_KEYUP)
+        else if (event.type == SDL_KEYUP)
         {
-            INPUT.pushKeyUp(e.key.keysym.scancode);
+            INPUT.pushKeyUp(event.key.keysym.scancode);
 
-            if (e.key.keysym.scancode == SDL_SCANCODE_RETURN && e.key.keysym.mod & KMOD_ALT)
+            if (event.key.keysym.scancode == SDL_SCANCODE_RETURN && event.key.keysym.mod & KMOD_ALT)
             {
                 Uint32 flags = SDL_GetWindowFlags(window);
                 const bool isFullscreen = flags & SDL_WINDOW_FULLSCREEN_DESKTOP || flags & SDL_WINDOW_FULLSCREEN;
@@ -49,19 +50,19 @@ bool handleEvents(SDL_Window* window, SDL_Event& e)
                 }
             }
         }
-        else if (e.type == SDL_QUIT)
+        else if (event.type == SDL_QUIT)
         {
             quit = true;
         }
-        else if (e.type == SDL_WINDOWEVENT)
+        else if (event.type == SDL_WINDOWEVENT)
         {
-            switch (e.window.event)
+            switch (event.window.event)
             {
                 case SDL_WINDOWEVENT_RESIZED:
                 case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    if(e.window.data1 < BACKBUFFER_WIDTH || e.window.data2 < BACKBUFFER_HEIGHT)
+                    if(event.window.data1 < BACKBUFFER_WIDTH || event.window.data2 < BACKBUFFER_HEIGHT)
                     {
-                        SDL_SetWindowSize(window, std::max(BACKBUFFER_WIDTH, e.window.data1), std::max(BACKBUFFER_HEIGHT, e.window.data2));
+                        SDL_SetWindowSize(window, std::max(BACKBUFFER_WIDTH, event.window.data1), std::max(BACKBUFFER_HEIGHT, event.window.data2));
                     }
                     break;
             }
@@ -104,7 +105,6 @@ int main(int argc, char *argv[])
 
     SDL_Texture* renderTarget = createRendertarget(renderer, BACKBUFFER_WIDTH, BACKBUFFER_HEIGHT);
 
-    SDL_Event e;
     bool quit = false;
 
     Uint32 time = SDL_GetTicks();
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
         while (timePassed >= targetFrameTime)
         {
-            quit = handleEvents(window, e);
+            quit = handleEvents(window);
             if (quit) break;
 
             timePassed -= targetFrameTime;
