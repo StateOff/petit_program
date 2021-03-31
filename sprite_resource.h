@@ -5,6 +5,8 @@
 #ifndef PETIT_PROGRAM_SPRITE_RESOURCE_H
 #define PETIT_PROGRAM_SPRITE_RESOURCE_H
 
+#include "graphics.h"
+
 /// Holds a texture atlas and rect for frames
 class SpriteResource
 {

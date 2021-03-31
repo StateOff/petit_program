@@ -5,7 +5,6 @@
 #ifndef PETIT_PROGRAM_SERVICE_LOCATOR_H
 #define PETIT_PROGRAM_SERVICE_LOCATOR_H
 
-#include "service_input.h"
 #include <cassert>
 #include <cstddef>
 #include <cstdio>
@@ -13,6 +12,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "service_input.h"
 
 template<typename ...TYPES>
 class ServiceLocator

@@ -1,14 +1,12 @@
-#include "component_sprite.h"
+#include <iostream>
+#include <vector>
+
+#include <SDL.h>
+
 #include "constants.h"
 #include "game.h"
 #include "graphics.h"
 #include "service_locator.h"
-#include <SDL.h>
-#include <cassert>
-#include <cmath>
-#include <iostream>
-#include <unordered_map>
-#include <vector>
 
 
 /// Creates a renderTarget. That is a special texture that can be used as destination

@@ -5,8 +5,9 @@
 #ifndef PETIT_PROGRAM_RESOURCES_H
 #define PETIT_PROGRAM_RESOURCES_H
 
-#include <SDL.h>
 #include <array>
+
+#include <SDL.h>
 
 constexpr int PLAYER_WIDTH = 9;
 constexpr int PLAYER_HEIGHT = 9;

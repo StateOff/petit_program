@@ -5,6 +5,11 @@
 #ifndef PETIT_PROGRAM_CONSTANTS_H
 #define PETIT_PROGRAM_CONSTANTS_H
 
+#include <array>
+#include <memory>
+
+#include "sprite_animation.h"
+
 constexpr const char* APP_NAME = "Petit Program";
 
 // The resolution of the game

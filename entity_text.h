@@ -6,6 +6,7 @@
 #define PETIT_PROGRAM_ENTITY_TEXT_H
 
 #include <cmath>
+
 class Text: public SpriteEntity
 {
 

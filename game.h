@@ -9,6 +9,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <SDL.h>
+
 #include "component_sprite.h"
 #include "constants.h"
 #include "entity.h"
@@ -19,7 +21,6 @@
 #include "entity_text.h"
 #include "levels.h"
 #include "sprite_resource.h"
-#include <SDL.h>
 
 
 class Game

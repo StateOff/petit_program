@@ -5,15 +5,17 @@
 #ifndef PETIT_PROGRAM_COMPONENT_SPRITE_H
 #define PETIT_PROGRAM_COMPONENT_SPRITE_H
 
+#include <cassert>
+#include <memory>
+#include <vector>
+
+#include <SDL.h>
+
 #include "component.h"
 #include "graphics.h"
 #include "resources.h"
 #include "sprite_animation.h"
 #include "sprite_resource.h"
-#include <SDL.h>
-#include <cassert>
-#include <memory>
-#include <vector>
 
 
 constexpr int CLIP_UNDEFINED = -1;
