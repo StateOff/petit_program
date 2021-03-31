@@ -31,7 +31,7 @@ public:
     /// \return
     SpriteResource(SDL_Renderer* renderer, const unsigned char* data, int width, int height, const std::array<SDL_Color, 5>& palette, int frames = 1)
     {
-        Uint32 pixelFormat = getPrefferedPixelformat(renderer);
+        Uint32 pixelFormat = getPreferredPixelformat(renderer);
 
         m_texture = SDL_CreateTexture(renderer,
                                     pixelFormat,

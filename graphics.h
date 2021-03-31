@@ -36,7 +36,7 @@ static SDL_Color mapColor(unsigned char colorCode, const std::array<SDL_Color, 5
 ///
 /// \param renderer
 /// \return
-Uint32 getPrefferedPixelformat(SDL_Renderer* renderer)
+Uint32 getPreferredPixelformat(SDL_Renderer* renderer)
 {
     // Cache the pixelformat, so we only need to get it once.
     // Note: This will not work if multiple renderers are used.

@@ -19,7 +19,7 @@
 /// \return
 SDL_Texture* createRendertarget(SDL_Renderer* renderer, int width, int height)
 {
-    Uint32 pixelFormat = getPrefferedPixelformat(renderer);
+    Uint32 pixelFormat = getPreferredPixelformat(renderer);
 
     SDL_Texture* texture = SDL_CreateTexture(renderer,
                                              pixelFormat,
